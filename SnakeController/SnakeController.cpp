@@ -80,6 +80,19 @@ namespace Snake
         return newHead;
     }
 
+    bool Controller::checkForSelfCollision(const Segment &newHead)
+    {
+        for (auto segment : m_segments)
+        {
+            if (segment.x == newHead.x and segment.y == newHead.y)
+            {
+                m_scorePort.send(std::make_unique<EventT<LooseInd>>());
+                return true;
+            }
+        }
+        return false;
+    }
+
     void Controller::receive(std::unique_ptr<Event> e)
     {
         try
@@ -88,17 +101,7 @@ namespace Snake
 
             Segment newHead = createNewHead();
 
-            bool lost = false;
-
-            for (auto segment : m_segments)
-            {
-                if (segment.x == newHead.x and segment.y == newHead.y)
-                {
-                    m_scorePort.send(std::make_unique<EventT<LooseInd>>());
-                    lost = true;
-                    break;
-                }
-            }
+            bool lost = checkForSelfCollision(newHead);
 
             if (not lost)
             {

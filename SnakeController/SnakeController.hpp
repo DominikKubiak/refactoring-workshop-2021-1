@@ -41,6 +41,7 @@ namespace Snake
 
     protected:
         Segment createNewHead();
+        bool checkForSelfCollision(const Segment& newHead);
 
     private:
         IPort &m_displayPort;
