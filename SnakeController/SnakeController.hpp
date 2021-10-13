@@ -43,6 +43,8 @@ namespace Snake
         Segment createNewHead();
         bool checkForSelfCollision(const Segment& newHead);
 
+        void placeNewFood(FoodInd receivedFood);
+
     private:
         IPort &m_displayPort;
         IPort &m_foodPort;

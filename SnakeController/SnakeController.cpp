@@ -93,6 +93,15 @@ namespace Snake
         return false;
     }
 
+    void Controller::placeNewFood(FoodInd receivedFood)
+    {
+        DisplayInd placeNewFood;
+                        placeNewFood.x = receivedFood.x;
+                        placeNewFood.y = receivedFood.y;
+                        placeNewFood.value = Cell_FOOD;
+                        m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewFood));
+    }
+
     void Controller::receive(std::unique_ptr<Event> e)
     {
         try
@@ -192,11 +201,7 @@ namespace Snake
                         clearOldFood.value = Cell_FREE;
                         m_displayPort.send(std::make_unique<EventT<DisplayInd>>(clearOldFood));
 
-                        DisplayInd placeNewFood;
-                        placeNewFood.x = receivedFood.x;
-                        placeNewFood.y = receivedFood.y;
-                        placeNewFood.value = Cell_FOOD;
-                        m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewFood));
+                        placeNewFood(receivedFood);
                     }
 
                     m_foodPosition = std::make_pair(receivedFood.x, receivedFood.y);
